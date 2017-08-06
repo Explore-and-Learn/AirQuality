@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using AirQuality.Feed;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -25,6 +26,17 @@ namespace AirQuality
         public MainPage()
         {
             this.InitializeComponent();
+            this.Loaded += MainPage_Loaded;
+
+        }
+
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            var url = "http://feeds.enviroflash.info/rss/realtime/116.xml";
+            var parser = new FeedParser();
+            var item = parser.Parse(url, FeedType.Rss)[0];
+            base.OnApplyTemplate();
+            this.textBlock.Text = item.Content;
         }
     }
 }

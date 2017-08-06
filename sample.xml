@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+		  <channel>
+		    <title>Portland, OR - Air Quality Forecast</title>
+			<link>http://www.airnow.gov/</link>
+			<description>EnviroFlash RSS Feed</description>
+			<language>en-us</language>
+			<webMaster>airnowdmc@sonomatech.com (AIRNow Data Management Center)</webMaster>
+			<pubDate>Sat, 05 Aug 2017 03:15:13 PDT</pubDate>
+			<item>			              
+				<title>Portland, OR - Air Quality Forecast</title>
+			    <link>http://feeds.enviroflash.info/rss/forecast/116.xml?id=0CA9A154-F7DB-664A-024CB7864345635C</link>
+				<description><![CDATA[
+					<!-- Format data output -->
+					&lt;div xmlns="http://www.w3.org/1999/xhtml"&gt;
+					&lt;table style="width: 350px;"&gt;
+						&lt;tr&gt;
+							&lt;td&gt;
+								&lt;br&gt;
+							&lt;/td&gt;
+						&lt;/tr&gt;
+						&lt;tr&gt;
+							&lt;td valign="top"&gt;
+								&lt;div&gt;&lt;b&gt;Location:&lt;/b&gt;  Portland, OR&lt;/div&gt;&lt;br /&gt;
+								&lt;div&gt;
+									&lt;b&gt;Forecast:&lt;/b&gt;&lt;br /&gt;
+									Today, 08/05/2017: Good  - 50 AQI - Particle Pollution (2.5 microns)&lt;br /&gt;
+									&lt;br /&gt;
+									
+										&lt;div&gt;
+											Tomorrow, 08/06/2017: Good  - 50 AQI - Particle Pollution (2.5 microns)&lt;br /&gt;
+										&lt;/div&gt;
+										&lt;br /&gt;
+									
+								&lt;/div&gt;
+								&lt;div&gt;&lt;b&gt;Agency:&lt;/b&gt; Oregon Dept. of Environmental Quality &lt;/div&gt;&lt;br /&gt;
+								&lt;div&gt;&lt;i&gt;Last Update: Sat, 05 Aug 2017 03:15:13 PDT&lt;/i&gt;&lt;/div&gt;
+							&lt;/td&gt;
+						&lt;/tr&gt;
+					&lt;/table&gt;
+					&lt;/div&gt;
+				]]></description>
+			</item>
+	     </channel>
+	   </rss>
