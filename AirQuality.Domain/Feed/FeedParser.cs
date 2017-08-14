@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.ServiceModel;
 using System.Xml.Linq;
-using Windows.Data.Html;
-using Windows.Security.Authentication.Web.Provider;
+using HtmlAgilityPack;
 
-namespace AirQuality.Feed
+namespace AirQuality.Domain.Feed
 {
     /// <summary>
     /// A simple RSS, RDF and ATOM feed parser.
@@ -19,17 +16,17 @@ namespace AirQuality.Feed
         /// Parses the given <see cref="FeedType"/> and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
         /// </summary>
         /// <returns></returns>
-        public IList<Item> Parse(string url, FeedType feedType)
+        public AirQuality Parse(int locationId, FeedType feedType)
         {
-            var rawFeed = GetFeedFromUrl(url);
+            var rawFeed = GetFeedFromUrl($"http://feeds.enviroflash.info/rss/realtime/{locationId}.xml");
             switch (feedType)
             {
                 case FeedType.Rss:
-                    return ParseRss(rawFeed);
+                    return ParseRss(rawFeed, locationId);
                 case FeedType.Rdf:
-                    return ParseRdf(rawFeed);
+                    return ParseRdf(rawFeed, locationId);
                 case FeedType.Atom:
-                    return ParseAtom(rawFeed);
+                    return ParseAtom(rawFeed, locationId);
                 default:
                     throw new NotSupportedException(string.Format("{0} is not supported", feedType.ToString()));
             }
@@ -38,83 +35,33 @@ namespace AirQuality.Feed
         /// <summary>
         /// Parses an Atom feed and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
         /// </summary>
-        public virtual IList<Item> ParseAtom(string rawFeed)
+        public virtual AirQuality ParseAtom(string rawFeed, int locationIdentifier)
         {
-            try
-            {
-                XDocument doc = XDocument.Parse(rawFeed);
-                // Feed/Entry
-                var entries = from item in doc.Root.Elements().Where(i => i.Name.LocalName == "entry")
-                    select new Item
-                    {
-                        FeedType = FeedType.Atom,
-                        Content = item.Elements().First(i => i.Name.LocalName == "content").Value,
-                        Link = item.Elements().First(i => i.Name.LocalName == "link").Attribute("href").Value,
-                        PublishDate = ParseDate(item.Elements().First(i => i.Name.LocalName == "published").Value),
-                        Title = item.Elements().First(i => i.Name.LocalName == "title").Value
-                    };
-                return entries.ToList();
-            }
-            catch
-            {
-                return new List<Item>();
-            }
+            return null;
         }
 
         /// <summary>
         /// Parses an RSS feed and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
         /// </summary>
-        public virtual IList<Item> ParseRss(string rawFeed)
+        public virtual AirQuality ParseRss(string rawFeed, int locationIdentifier)
         {
             XDocument doc = XDocument.Parse(rawFeed);
             var channel = doc.Root.Descendants().First(i => i.Name.LocalName == "channel");
             // RSS/Channel/item
             var entries = from item in channel.Elements().Where(i => i.Name.LocalName == "item")
-                select new Item
-                
+                select new
                 {
-                    FeedType = FeedType.Rss,
-                    Content = item.Elements().First(i => i.Name.LocalName == "description").Value,
-                    Link = item.Elements().First(i => i.Name.LocalName == "link").Value,
-                    PublishDate = ParseDate(channel.Elements().First(i => i.Name.LocalName == "pubDate").Value),
-                    Title = item.Elements().First(i => i.Name.LocalName == "title").Value
+                    Content = item.Elements().First(i => i.Name.LocalName == "description").Value
                 };
-            return entries.ToList();
+            return new AirQuality(GetAirQualityData(entries.FirstOrDefault().Content, locationIdentifier, FeedType.Rss));
         }
 
         /// <summary>
         /// Parses an RDF feed and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
         /// </summary>
-        public virtual IList<Item> ParseRdf(string rawFeed)
+        public virtual AirQuality ParseRdf(string rawFeed, int locationIdentifier)
         {
-            try
-            {
-                XDocument doc = XDocument.Parse(rawFeed);
-                // <item> is under the root
-                var entries = from item in doc.Root.Descendants().Where(i => i.Name.LocalName == "item")
-                    select new Item
-                    {
-                        FeedType = FeedType.Rdf,
-                        Content = item.Elements().First(i => i.Name.LocalName == "description").Value.RemoveCdata(),
-                        Link = item.Elements().First(i => i.Name.LocalName == "link").Value,
-                        PublishDate = ParseDate(item.Elements().First(i => i.Name.LocalName == "date").Value),
-                        Title = item.Elements().First(i => i.Name.LocalName == "title").Value
-                    };
-                return entries.ToList();
-            }
-            catch
-            {
-                return new List<Item>();
-            }
-        }
-
-        private DateTime ParseDate(string date)
-        {
-            DateTime result;
-            if (DateTime.TryParse(date, out result))
-                return result;
-            else
-                return DateTime.MinValue;
+            return null;
         }
 
         private string GetFeedFromUrl(string url)
@@ -149,6 +96,45 @@ namespace AirQuality.Feed
                 }
             }
             return update;
+        }
+
+        private IDictionary<string, string> GetAirQualityData(string htmlContentAsString, int locationId, FeedType feedType)
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(htmlContentAsString);
+            var nodes = doc.DocumentNode.Descendants("div")
+                .Select(d => d.InnerText.Replace("\n", "|").Replace("\t", ""));
+            var values = new Dictionary<string, string>();
+            values.Add("Last Update", "");
+            values.Add("Location", "");
+            values.Add("Agency", "");
+            values.Add("Ozone", "");
+            values.Add("Particle Pollution", "");
+            values.Add("LocationIdentifier", locationId.ToString());
+            values.Add("FeedType", feedType.ToString());
+            foreach (var n in nodes)
+            {
+                var e = n.Replace("||", "|").Split('|');
+                foreach (var i in e)
+                {
+                    if (!String.IsNullOrWhiteSpace(i))
+                    {
+                        var pair = values.FirstOrDefault(
+                            kvp => i.Contains(kvp.Key) && String.IsNullOrWhiteSpace(kvp.Value));
+                        if (pair.Key != default(string))
+                        {
+                            values[pair.Key] = RemoveLabel(i);
+                        }
+                    }
+                }
+            }
+            return values;
+        }
+
+        private string RemoveLabel(string data)
+        {
+            var indexOfLabelDelimiter = data.IndexOf(':');
+            return indexOfLabelDelimiter > -1 ? data.Substring(indexOfLabelDelimiter + 1).Trim() : data;
         }
     }
 
