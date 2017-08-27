@@ -20,9 +20,8 @@ namespace AirQuality
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             var parser = new FeedParser();
-            var item = parser.Parse(116, FeedType.Rss);
-            OnApplyTemplate();
-            Location.Text = item.Location;
+            var item = parser.Parse(117, FeedType.Rss);
+            Location.Text = item.Location.Item1;
             Agency.Text = item.Agency;
             LastUpdate.Text = item.LastUpdate;
             ParticlePollution.Text = item.ParticlePollution;

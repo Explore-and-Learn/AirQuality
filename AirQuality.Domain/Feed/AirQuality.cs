@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Windows.ApplicationModel.Background;
 
 namespace AirQuality.Domain.Feed
 {
@@ -9,26 +10,45 @@ namespace AirQuality.Domain.Feed
     /// </summary>
     public class AirQuality
     {
-        public string LastUpdate { get; }
+        public string LastUpdate { get; private set; }
         public string ParticlePollution { get; set; }
-        public string Ozone { get; }
-        public string Location { get; }
-        public string Agency { get; }
-        public int LocationIdentifier { get; }
+        public string Ozone { get; private set; }
+        public Tuple<string, string> Location { get; private set; }
+        public string Agency { get; private set; }
+        public int LocationIdentifier { get; private set; }
         public FeedType FeedType { get; set; }
 
-        public AirQuality(IDictionary<string, string> dict)
+        public override string ToString()
         {
-            if (dict != null)
-            {
-                Location = dict["Location"];
-                LastUpdate = dict["Last Update"];
-                ParticlePollution = dict["Particle Pollution"];
-                Ozone = dict["Ozone"];
-                Agency = dict["Agency"];
-                LocationIdentifier = int.Parse(dict["LocationIdentifier"]);
-            }
+            return $"{Location.Item1}, {Location.Item2}";
+        }
 
+        public static AirQuality CreateAirQuality(IDictionary<string, string> dict)
+        { 
+            AirQuality quality = null;
+            if (!String.IsNullOrWhiteSpace(dict?["Location"]))
+            {
+                var location = dict["Location"].Split(',');
+                quality = new AirQuality();
+                quality.Location = location.Length == 2 ? Tuple.Create(location[0], location[1]) : Tuple.Create(location[0], "");
+                quality.LastUpdate = dict["Last Update"];
+                quality.ParticlePollution = dict["Particle Pollution"];
+                quality.Ozone = dict["Ozone"];
+                quality.Agency = dict["Agency"];
+                quality.LocationIdentifier = int.Parse(dict["LocationIdentifier"]);
+            }
+            else
+            {
+                quality = new NullAirQuality();
+            }
+            return quality;
+        }
+    }
+    public class NullAirQuality : AirQuality
+    {
+        public override string ToString()
+        {
+            return "Empty";
         }
     }
 }

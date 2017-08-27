@@ -45,15 +45,22 @@ namespace AirQuality.Domain.Feed
         /// </summary>
         public virtual AirQuality ParseRss(string rawFeed, int locationIdentifier)
         {
-            XDocument doc = XDocument.Parse(rawFeed);
-            var channel = doc.Root.Descendants().First(i => i.Name.LocalName == "channel");
-            // RSS/Channel/item
-            var entries = from item in channel.Elements().Where(i => i.Name.LocalName == "item")
-                select new
-                {
-                    Content = item.Elements().First(i => i.Name.LocalName == "description").Value
-                };
-            return new AirQuality(GetAirQualityData(entries.FirstOrDefault().Content, locationIdentifier, FeedType.Rss));
+            try
+            {
+                XDocument doc = XDocument.Parse(rawFeed);
+                var channel = doc.Root.Descendants().First(i => i.Name.LocalName == "channel");
+                // RSS/Channel/item
+                var entries = from item in channel.Elements().Where(i => i.Name.LocalName == "item")
+                    select new
+                    {
+                        Content = item.Elements().First(i => i.Name.LocalName == "description").Value
+                    };
+                return AirQuality.CreateAirQuality(GetAirQualityData(entries.FirstOrDefault().Content, locationIdentifier, FeedType.Rss));
+            }
+            catch
+            {
+               return new NullAirQuality();
+            }
         }
 
         /// <summary>

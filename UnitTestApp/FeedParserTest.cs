@@ -13,14 +13,18 @@ namespace UnitTestApp
         [TestMethod]
         public void TestRssParser()
         {
-            for (int j = 1; j < 200; j++)
+           var validFeeds = new Dictionary<int, AirQuality.Domain.Feed.AirQuality>();
+
+            for (int j = 1; j < 900; j++)
             {
                 var parser = new FeedParser();
                 var airQuality = parser.Parse(j, FeedType.Rss);
-                Assert.IsTrue(!String.IsNullOrWhiteSpace(airQuality.ParticlePollution),
+                if (airQuality is NullAirQuality) continue;
+                Assert.IsNotNull(airQuality.Location,
                     $"Expected a valid location for {j} but nothing was returned.");
-
+                validFeeds.Add(j, airQuality);
             }
+
         }
 
         [TestMethod]
@@ -43,11 +47,9 @@ namespace UnitTestApp
 
     public class TestAirQuality : AirQuality.Domain.Feed.AirQuality
     {
-        public TestAirQuality() : base(null)
+        public TestAirQuality()
         {
             ParticlePollution = "Good  - 12 AQI - Particle Pollution (2.5 microns)";
         }
-        public TestAirQuality(IDictionary<string, string> dict) : base(dict)
-        { }
     }
 }
