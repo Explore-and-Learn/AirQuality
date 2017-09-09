@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Xml.Linq;
+
+#if WINDOWS_UWP
 using HtmlAgilityPack;
+#else
+using cloudscribe.HtmlAgilityPack;
+#endif
 
 namespace AirQuality.Domain.Feed
 {

@@ -40,10 +40,10 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
@@ -106,9 +106,15 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Feed\FeedParser.cs" />
-    <Compile Include="Feed\FeedType.cs" />
-    <Compile Include="Feed\AirQuality.cs" />
+    <Compile Include="..\AirQuality.Domain.Standard\Feed\AirQuality.cs">
+      <Link>Feed\AirQuality.cs</Link>
+    </Compile>
+    <Compile Include="..\AirQuality.Domain.Standard\Feed\FeedParser.cs">
+      <Link>Feed\FeedParser.cs</Link>
+    </Compile>
+    <Compile Include="..\AirQuality.Domain.Standard\Feed\FeedType.cs">
+      <Link>Feed\FeedType.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\AirQuality.Domain.rd.xml" />
   </ItemGroup>

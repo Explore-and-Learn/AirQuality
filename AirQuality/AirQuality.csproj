@@ -133,11 +133,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AirQuality.Domain\AirQuality.Domain.csproj">
-      <Project>{329966E8-1B14-45F8-BE9A-BC7620E07FC8}</Project>
+      <Project>{329966e8-1b14-45f8-be9a-bc7620e07fc8}</Project>
       <Name>AirQuality.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

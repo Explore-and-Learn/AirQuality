@@ -1,19 +1,17 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using AirQuality.Domain.Feed;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTestApp
+namespace AirQuality.UnitTests
 {
     [TestClass]
-    public class FeedParserTest
+    public class FeedParserTests
     {
         [TestMethod]
         public void TestRssParser()
         {
-           var validFeeds = new Dictionary<int, AirQuality.Domain.Feed.AirQuality>();
+           var validFeeds = new Dictionary<int, Domain.Feed.AirQuality>();
 
             for (int j = 1; j < 900; j++)
             {
@@ -45,7 +43,7 @@ namespace UnitTestApp
 
 
 
-    public class TestAirQuality : AirQuality.Domain.Feed.AirQuality
+    public class TestAirQuality : Domain.Feed.AirQuality
     {
         public TestAirQuality()
         {
