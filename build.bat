@@ -1,0 +1,1 @@
+msbuild %~dp0\AirQuality.sln
