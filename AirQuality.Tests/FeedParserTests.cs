@@ -12,8 +12,8 @@ namespace AirQuality.Tests
         public void TestRssParser()
         {
            var validFeeds = new Dictionary<int, Domain.Feed.AirQuality>();
-
-            for (int j = 1; j < 900; j++)
+            //use 900 when populating data
+            for (int j = 1; j < 10; j++)
             {
                 var parser = new FeedParser();
                 var airQuality = parser.Parse(j, FeedType.Rss);
