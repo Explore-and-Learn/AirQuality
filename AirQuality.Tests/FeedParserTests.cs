@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using AirQuality.Domain.Feed;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AirQuality.UnitTests
+namespace AirQuality.Tests
 {
     [TestClass]
     public class FeedParserTests
