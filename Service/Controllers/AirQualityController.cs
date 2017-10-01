@@ -8,7 +8,7 @@ namespace Service.Controllers
     {
         private readonly FeedParser _parser = new FeedParser();
        
-        // GET api/values/5
+        // GET api/AirQuality/116 - return Portland, OR
         [HttpGet("{id}")]
         public AirQuality.Domain.Feed.AirQuality Get(int id)
         {

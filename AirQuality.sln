@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQuality", "AirQuality\AirQuality.csproj", "{CF19BF6B-BC0F-4532-83BD-B9F7C18C1581}"
 EndProject
@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirQuality.Domain.Standard"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQuality.Domain", "AirQuality.Domain\AirQuality.Domain.csproj", "{329966E8-1B14-45F8-BE9A-BC7620E07FC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQuality.Tests", "AirQuality.Tests\AirQuality.Tests.csproj", "{ED8EA33A-8E57-4FC3-8365-8F1F4FAF3229}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirQuality.Tests", "AirQuality.Tests\AirQuality.Tests.csproj", "{ED8EA33A-8E57-4FC3-8365-8F1F4FAF3229}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{44B073FC-872C-4CE5-A67C-DA78822FB458}"
-EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{44B073FC-872C-4CE5-A67C-DA78822FB458}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,22 +109,6 @@ Global
 		{44B073FC-872C-4CE5-A67C-DA78822FB458}.Release|x64.Build.0 = Release|Any CPU
 		{44B073FC-872C-4CE5-A67C-DA78822FB458}.Release|x86.ActiveCfg = Release|Any CPU
 		{44B073FC-872C-4CE5-A67C-DA78822FB458}.Release|x86.Build.0 = Release|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Debug|ARM.Build.0 = Debug|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Debug|x64.Build.0 = Debug|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Debug|x86.Build.0 = Debug|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Release|ARM.ActiveCfg = Release|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Release|ARM.Build.0 = Release|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Release|x64.ActiveCfg = Release|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Release|x64.Build.0 = Release|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Release|x86.ActiveCfg = Release|Any CPU
-		{7103BD79-8855-4CEB-9F97-262CEAB6D6B6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
