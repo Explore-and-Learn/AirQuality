@@ -13,7 +13,7 @@ namespace AirQuality.Tests
         {
            var validFeeds = new Dictionary<int, Domain.Feed.AirQuality>();
             //use 900 when populating data
-            for (int j = 1; j < 10; j++)
+            for (int j = 1; j < 900; j++)
             {
                 var parser = new FeedParser();
                 var airQuality = parser.Parse(j, FeedType.Rss);
