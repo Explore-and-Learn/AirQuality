@@ -4,15 +4,13 @@ using System.Web.Http;
 namespace AirQuality.Service.Controllers
 {
     
+    /// <summary>
+    /// This controller returns the air quality reading and or reading for specific US locations
+    /// </summary>
     public class AirQualityController : ApiController
     {
-        [HttpGet, Route("tests")]
-        public IHttpActionResult Get()
-        {
-            return Ok(new List<string> { "Test 1", "Test 2" });
-        }
-
-        [HttpGet, Route("tests/{id:int}")]
+       
+        [HttpGet, Route("{id:int}")]
         public IHttpActionResult Get(int id)
         {
             return Ok(id * id);
