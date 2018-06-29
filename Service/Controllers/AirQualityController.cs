@@ -1,4 +1,5 @@
 ﻿using AirQuality.Domain.Feed;
+using AirQuality.Domain.Standard.Feed;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Service.Controllers

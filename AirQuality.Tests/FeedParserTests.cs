@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using AirQuality.Domain.Feed;
+using AirQuality.Domain.Standard.Feed;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AirQuality.Tests

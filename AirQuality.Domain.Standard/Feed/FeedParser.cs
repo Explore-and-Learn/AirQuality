@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Xml.Linq;
-
+using AirQuality.Domain.Feed;
+using cloudscribe.HtmlAgilityPack;
 #if WINDOWS_UWP
 using HtmlAgilityPack;
 #else
-using cloudscribe.HtmlAgilityPack;
+
 #endif
 
-namespace AirQuality.Domain.Feed
+namespace AirQuality.Domain.Standard.Feed
 {
     /// <summary>
     /// A simple RSS, RDF and ATOM feed parser.
@@ -18,10 +19,10 @@ namespace AirQuality.Domain.Feed
     public class FeedParser
     {
         /// <summary>
-        /// Parses the given <see cref="FeedType"/> and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
+        /// Parses the given <see cref="FeedType"/> and returns a <see cref="Domain.Feed.AirQuality"/>.
         /// </summary>
         /// <returns></returns>
-        public AirQuality Parse(int locationId, FeedType feedType)
+        public Domain.Feed.AirQuality Parse(int locationId, FeedType feedType)
         {
             var rawFeed = GetFeedFromUrl($"http://feeds.enviroflash.info/rss/realtime/{locationId}.xml");
             switch (feedType)
@@ -33,45 +34,47 @@ namespace AirQuality.Domain.Feed
                 case FeedType.Atom:
                     return ParseAtom(rawFeed, locationId);
                 default:
-                    throw new NotSupportedException(string.Format("{0} is not supported", feedType.ToString()));
+                    throw new NotSupportedException($"{feedType.ToString()} is not supported");
             }
         }
 
         /// <summary>
-        /// Parses an Atom feed and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
+        /// Parses an Atom feed and returns a <see cref="Domain.Feed.AirQuality"/>.
         /// </summary>
-        public virtual AirQuality ParseAtom(string rawFeed, int locationIdentifier)
+        public virtual Domain.Feed.AirQuality ParseAtom(string rawFeed, int locationIdentifier)
         {
             return null;
         }
 
         /// <summary>
-        /// Parses an RSS feed and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
+        /// Parses an RSS feed and returns a <see cref="Domain.Feed.AirQuality"/>.
         /// </summary>
-        public virtual AirQuality ParseRss(string rawFeed, int locationIdentifier)
+        public virtual Domain.Feed.AirQuality ParseRss(string rawFeed, int locationIdentifier)
         {
             try
             {
                 XDocument doc = XDocument.Parse(rawFeed);
-                var channel = doc.Root.Descendants().First(i => i.Name.LocalName == "channel");
-                // RSS/Channel/item
-                var entries = from item in channel.Elements().Where(i => i.Name.LocalName == "item")
-                    select new
-                    {
-                        Content = item.Elements().First(i => i.Name.LocalName == "description").Value
-                    };
-                return AirQuality.CreateAirQuality(GetAirQualityData(entries.FirstOrDefault().Content, locationIdentifier, FeedType.Rss));
+                if (doc.Root != null)
+                {
+                    var channel = doc.Root.Descendants().First(i => i.Name.LocalName == "channel");
+                    // RSS/Channel/item
+                    var entries = from item in channel.Elements().Where(i => i.Name.LocalName == "item")
+                        select new
+                        {
+                            Content = item.Elements().First(i => i.Name.LocalName == "description").Value
+                        };
+                    return Domain.Feed.AirQuality.CreateAirQuality(GetAirQualityData(entries.FirstOrDefault()?.Content, locationIdentifier, FeedType.Rss));
+                }
             }
             catch
-            {
-               return new NullAirQuality();
-            }
+            {}
+            return new NullAirQuality();
         }
 
         /// <summary>
-        /// Parses an RDF feed and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
+        /// Parses an RDF feed and returns a <see cref="Domain.Feed.AirQuality"/>/>.
         /// </summary>
-        public virtual AirQuality ParseRdf(string rawFeed, int locationIdentifier)
+        public virtual Domain.Feed.AirQuality ParseRdf(string rawFeed, int locationIdentifier)
         {
             return null;
         }
