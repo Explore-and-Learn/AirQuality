@@ -19,10 +19,10 @@ namespace AirQuality.Domain.Standard.Feed
     public class FeedParser
     {
         /// <summary>
-        /// Parses the given <see cref="FeedType"/> and returns a <see cref="Domain.Feed.AirQuality"/>.
+        /// Parses the given <see cref="FeedType"/> and returns a <see cref="AirQuality"/>.
         /// </summary>
         /// <returns></returns>
-        public Domain.Feed.AirQuality Parse(int locationId, FeedType feedType)
+        public AirQuality Parse(int locationId, FeedType feedType)
         {
             var rawFeed = GetFeedFromUrl($"http://feeds.enviroflash.info/rss/realtime/{locationId}.xml");
             switch (feedType)
@@ -39,17 +39,17 @@ namespace AirQuality.Domain.Standard.Feed
         }
 
         /// <summary>
-        /// Parses an Atom feed and returns a <see cref="Domain.Feed.AirQuality"/>.
+        /// Parses an Atom feed and returns a <see cref="AirQuality"/>.
         /// </summary>
-        public virtual Domain.Feed.AirQuality ParseAtom(string rawFeed, int locationIdentifier)
+        public virtual AirQuality ParseAtom(string rawFeed, int locationIdentifier)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Parses an RSS feed and returns a <see cref="Domain.Feed.AirQuality"/>.
+        /// Parses an RSS feed and returns a <see cref="AirQuality"/>.
         /// </summary>
-        public virtual Domain.Feed.AirQuality ParseRss(string rawFeed, int locationIdentifier)
+        public virtual AirQuality ParseRss(string rawFeed, int locationIdentifier)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace AirQuality.Domain.Standard.Feed
                         {
                             Content = item.Elements().First(i => i.Name.LocalName == "description").Value
                         };
-                    return Domain.Feed.AirQuality.CreateAirQuality(GetAirQualityData(entries.FirstOrDefault()?.Content, locationIdentifier, FeedType.Rss));
+                    return AirQuality.CreateAirQuality(GetAirQualityData(entries.FirstOrDefault()?.Content, locationIdentifier, FeedType.Rss));
                 }
             }
             catch
@@ -72,11 +72,11 @@ namespace AirQuality.Domain.Standard.Feed
         }
 
         /// <summary>
-        /// Parses an RDF feed and returns a <see cref="Domain.Feed.AirQuality"/>/>.
+        /// Parses an RDF feed and returns a <see cref="AirQuality"/>/>.
         /// </summary>
-        public virtual Domain.Feed.AirQuality ParseRdf(string rawFeed, int locationIdentifier)
+        public virtual AirQuality ParseRdf(string rawFeed, int locationIdentifier)
         {
-            return null;
+           throw new NotImplementedException();
         }
 
         private string GetFeedFromUrl(string url)

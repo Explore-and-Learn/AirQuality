@@ -12,7 +12,7 @@ namespace AirQuality.Tests
         [TestMethod]
         public void TestRssParser()
         {
-           var validFeeds = new Dictionary<int, Domain.Feed.AirQuality>();
+           var validFeeds = new Dictionary<int, Domain.Standard.Feed.AirQuality>();
             //use 900 when populating data
             for (int j = 1; j < 10; j++)
             {
@@ -44,7 +44,7 @@ namespace AirQuality.Tests
 
 
 
-    public class TestAirQuality : Domain.Feed.AirQuality
+    public class TestAirQuality : Domain.Standard.Feed.AirQuality
     {
         public TestAirQuality()
         {

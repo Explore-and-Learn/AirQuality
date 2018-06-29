@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using AirQuality.Domain.Feed;
 
-namespace AirQuality.Domain.Feed
+namespace AirQuality.Domain.Standard.Feed
 {
     /// <summary>
     /// Represents a feed item.
@@ -11,7 +13,7 @@ namespace AirQuality.Domain.Feed
         public string LastUpdate { get; private set; }
         public string ParticlePollution { get; set; }
         public string Ozone { get; private set; }
-        public Tuple<string, string> Location { get; private set; }
+        public ValueTuple<string,string> Location { get; private set; }
         public string Agency { get; private set; }
         public int LocationIdentifier { get; private set; }
         public FeedType FeedType { get; set; }
@@ -21,19 +23,28 @@ namespace AirQuality.Domain.Feed
             return $"{Location.Item1}, {Location.Item2}";
         }
 
+        /// <summary>
+        /// Helper method that returns an <see cref="AirQuality"/> instance based on values stored in a dictionary
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <returns></returns>
         public static AirQuality CreateAirQuality(IDictionary<string, string> dict)
         { 
             AirQuality quality = null;
             if (!String.IsNullOrWhiteSpace(dict?["Location"]))
             {
                 var location = dict["Location"].Split(',');
-                quality = new AirQuality();
-                quality.Location = location.Length == 2 ? Tuple.Create(location[0], location[1]) : Tuple.Create(location[0], "");
-                quality.LastUpdate = dict["Last Update"];
-                quality.ParticlePollution = dict["Particle Pollution"];
-                quality.Ozone = dict["Ozone"];
-                quality.Agency = dict["Agency"];
-                quality.LocationIdentifier = int.Parse(dict["LocationIdentifier"]);
+                quality = new AirQuality
+                {
+                    Location = location.Length == 2
+                        ? ValueTuple.Create(location[0], location[1])
+                        : ValueTuple.Create(location[0], ""),
+                    LastUpdate = dict["Last Update"],
+                    ParticlePollution = dict["Particle Pollution"],
+                    Ozone = dict["Ozone"],
+                    Agency = dict["Agency"],
+                    LocationIdentifier = int.Parse(dict["LocationIdentifier"])
+                };
             }
             else
             {
