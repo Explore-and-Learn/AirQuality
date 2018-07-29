@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using AirQuality.Domain.Feed;
 using cloudscribe.HtmlAgilityPack;
@@ -22,9 +23,9 @@ namespace AirQuality.Domain.Standard.Feed
         /// Parses the given <see cref="FeedType"/> and returns a <see cref="AirQuality"/>.
         /// </summary>
         /// <returns></returns>
-        public AirQuality Parse(int locationId, FeedType feedType)
+        public async Task<AirQuality> Parse(int locationId, FeedType feedType)
         {
-            var rawFeed = GetFeedFromUrl($"http://feeds.enviroflash.info/rss/realtime/{locationId}.xml");
+            var rawFeed = await GetFeedFromUrl($"http://feeds.enviroflash.info/rss/realtime/{locationId}.xml");
             switch (feedType)
             {
                 case FeedType.Rss:
@@ -79,12 +80,12 @@ namespace AirQuality.Domain.Standard.Feed
            throw new NotImplementedException();
         }
 
-        private string GetFeedFromUrl(string url)
+        private async Task<string> GetFeedFromUrl(string url)
         {
             var client = new HttpClient();
-            var task = client.GetAsync(url);
-            var raw = task.Result.Content.ReadAsStringAsync().Result;
-            return FixDescriptionHtmlIfExists(raw);
+            var task = await client.GetAsync(url);
+            var result = await task.Content.ReadAsStringAsync();
+            return FixDescriptionHtmlIfExists(result);
         }
 
         private string FixDescriptionHtmlIfExists(string rawFeed)
